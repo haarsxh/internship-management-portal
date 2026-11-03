@@ -9,11 +9,13 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Expired/invalid token on a protected call: clear session and send user to login
+// Expired/invalid token on a protected call: clear session and send user to login.
+// The initial /auth/me session check is excluded: AuthContext clears the token itself, so
+// public pages stay usable and ProtectedRoute does the redirect where needed.
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    const isAuthCall = err.config?.url?.startsWith('/auth/login') || err.config?.url?.startsWith('/auth/register')
+    const isAuthCall = ['/auth/login', '/auth/register', '/auth/me'].some((u) => err.config?.url === u)
     if (err.response?.status === 401 && !isAuthCall && localStorage.getItem('token')) {
       localStorage.removeItem('token')
       window.location.href = '/login'
