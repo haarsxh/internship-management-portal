@@ -49,6 +49,8 @@ In Atlas, add your IP under *Network Access* and use a database user's credentia
 | Company (pending approval) | hr@globex.com | company123 |
 | Student | riya@student.com | student123 |
 
+The login page has one-click **Quick demo sign in** buttons (Student / Company / Admin) that use these seeded accounts. Set `VITE_DEMO_LOGIN=false` in `client/.env` to hide them (do this for any real deployment).
+
 Self-registration only creates students and companies; companies must be approved by an admin before posting.
 
 ## Demo flow for viva
