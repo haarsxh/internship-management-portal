@@ -2,15 +2,17 @@ import { Link } from 'react-router-dom'
 import InternshipCard from '../components/InternshipCard'
 import Spinner from '../components/Spinner'
 import useFetch from '../hooks/useFetch'
+import useQuickLogin, { showDemo } from '../hooks/useQuickLogin'
 
 const tiles = [
-  { who: 'Students', line: 'Find it. Apply. Done.', text: 'Search by skill, location and stipend. Apply with your resume in seconds and follow every decision.' },
-  { who: 'Companies', line: 'Hire the next generation.', text: 'Post internships, review applicants and move them from shortlisted to accepted in one place.' },
-  { who: 'Admins', line: 'See the whole picture.', text: 'Approve companies and track applications and postings with live platform statistics.' },
+  { role: 'student', who: 'Students', line: 'Find it. Apply. Done.', text: 'Search by skill, location and stipend. Apply with your resume in seconds and follow every decision.' },
+  { role: 'company', who: 'Companies', line: 'Hire the next generation.', text: 'Post internships, review applicants and move them from shortlisted to accepted in one place.' },
+  { role: 'admin', who: 'Admins', line: 'See the whole picture.', text: 'Approve companies and track applications and postings with live platform statistics.' },
 ]
 
 export default function Home() {
   const { data, loading } = useFetch('/internships', { limit: 3 })
+  const { quickLogin, busy } = useQuickLogin()
 
   return (
     <div>
@@ -52,12 +54,29 @@ export default function Home() {
       </section>
 
       <section className="bg-white px-4 py-20">
+        <h2 className="mb-2 text-center text-4xl sm:text-5xl">Pick your portal.</h2>
+        <p className="mb-10 text-center text-xl text-slate-500">
+          {showDemo ? 'One tap to jump in with a demo account.' : 'Sign in to continue.'}
+        </p>
         <div className="mx-auto grid max-w-[1024px] gap-5 md:grid-cols-3">
           {tiles.map((t) => (
             <div key={t.who} className="rounded-[28px] bg-slate-50 p-8">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{t.who}</p>
               <h3 className="mt-2 text-3xl leading-tight">{t.line}</h3>
               <p className="mt-4 text-[17px] text-slate-500">{t.text}</p>
+              {showDemo ? (
+                <button
+                  onClick={() => quickLogin(t.role)}
+                  disabled={busy}
+                  className="mt-6 rounded-full bg-indigo-600 px-5 py-2 text-[15px] text-white hover:bg-[#0077ed] disabled:opacity-60"
+                >
+                  Open {t.role} portal
+                </button>
+              ) : (
+                <Link to="/login" className="mt-6 inline-block text-[17px] text-indigo-700 hover:underline">
+                  Sign in &rsaquo;
+                </Link>
+              )}
             </div>
           ))}
         </div>

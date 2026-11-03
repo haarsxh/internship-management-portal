@@ -1,26 +1,13 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 import FormInput from '../components/FormInput'
 import PasswordInput from '../components/PasswordInput'
-import { useAuth } from '../context/AuthContext'
-import { errMsg } from '../utils'
-
-// Accounts created by `npm run seed`. Hide the buttons with VITE_DEMO_LOGIN=false.
-const demoAccounts = [
-  { label: 'Student', email: 'riya@student.com', password: 'student123' },
-  { label: 'Company', email: 'hr@acme.com', password: 'company123' },
-  { label: 'Admin', email: 'admin@portal.com', password: 'admin123' },
-]
-const showDemo = import.meta.env.VITE_DEMO_LOGIN !== 'false'
+import useQuickLogin, { demoAccounts, showDemo } from '../hooks/useQuickLogin'
 
 export default function Login() {
-  const { login } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
   const [form, setForm] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
-  const [submitting, setSubmitting] = useState(false)
+  const { signIn, quickLogin, busy: submitting } = useQuickLogin()
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -29,19 +16,6 @@ export default function Login() {
     if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = 'Enter a valid email'
     if (!form.password) e.password = 'Password is required'
     return e
-  }
-
-  const signIn = async (email, password) => {
-    setSubmitting(true)
-    try {
-      const user = await login(email, password)
-      toast.success(`Welcome back, ${user.name}`)
-      navigate(location.state?.from?.pathname || '/dashboard', { replace: true })
-    } catch (err) {
-      toast.error(errMsg(err))
-    } finally {
-      setSubmitting(false)
-    }
   }
 
   const handleSubmit = (ev) => {
@@ -72,12 +46,12 @@ export default function Login() {
         <div className="mt-6 text-center">
           <p className="mb-3 text-xs uppercase tracking-wide text-slate-400">Quick demo sign in</p>
           <div className="flex justify-center gap-3">
-            {demoAccounts.map((a) => (
+            {Object.entries(demoAccounts).map(([role, a]) => (
               <button
-                key={a.label}
+                key={role}
                 type="button"
                 disabled={submitting}
-                onClick={() => signIn(a.email, a.password)}
+                onClick={() => quickLogin(role)}
                 className="rounded-full border border-slate-300 bg-white px-5 py-2 text-sm hover:border-indigo-600 hover:text-indigo-700 disabled:opacity-60"
               >
                 {a.label}
