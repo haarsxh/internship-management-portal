@@ -20,7 +20,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
     { name: 'Portal Admin', email: 'admin@portal.com', password: 'admin123', role: 'admin' },
     { name: 'Acme HR', email: 'hr@acme.com', password: 'company123', role: 'company', companyName: 'Acme Technologies', website: 'https://acme.example.com', isApproved: true },
     { name: 'Globex HR', email: 'hr@globex.com', password: 'company123', role: 'company', companyName: 'Globex Corp', isApproved: false },
-    { name: 'Riya Sharma', email: 'riya@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'CSE', phone: '9876543210', skills: ['React', 'Node.js'] } },
+    { name: 'Harsh Verma', email: 'riya@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'CSE', phone: '9876543210', skills: ['React', 'Node.js'] } },
     { name: 'Aman Verma', email: 'aman@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'ECE', skills: ['Python'] } },
     { name: 'Neha Singh', email: 'neha@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'IT', skills: ['Java', 'SQL'] } },
   ]);
@@ -62,7 +62,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
     { student: s3._id, internship: internships[3]._id, coverLetter: 'I enjoy backend work.', resumeUrl: resume, createdAt: ago(1) },
   ]);
 
-  // Riya bookmarks one internship that is about to close so the dashboard alert is visible
+  // Harsh bookmarks one internship that is about to close so the dashboard alert is visible
   await Internship.updateOne({ _id: internships[3]._id }, { deadline: days(2) });
   await User.updateOne({ _id: s1._id }, { savedInternships: [internships[3]._id, internships[2]._id] });
   await Announcement.create({ message: 'Welcome to InternHub! Applications for the autumn cohort are now open.', createdBy: admin._id });

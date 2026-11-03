@@ -221,7 +221,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Riya Sharma\",\n  \"college\": \"MNIT Jaipur\",\n  \"skills\": \"React, Node.js\"\n}"
+              "raw": "{\n  \"name\": \"Harsh Verma\",\n  \"college\": \"MNIT Jaipur\",\n  \"skills\": \"React, Node.js\"\n}"
             }
           }
         },
