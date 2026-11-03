@@ -5,14 +5,16 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Internship = require('../models/Internship');
 const Application = require('../models/Application');
+const Announcement = require('../models/Announcement');
+const AuditLog = require('../models/AuditLog');
 
 const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
 
 (async () => {
   await mongoose.connect(process.env.MONGO_URI);
-  await Promise.all([User.deleteMany(), Internship.deleteMany(), Application.deleteMany()]);
+  await Promise.all([User.deleteMany(), Internship.deleteMany(), Application.deleteMany(), Announcement.deleteMany(), AuditLog.deleteMany()]);
   // Make sure indexes (unique email, compound, text) exist
-  await Promise.all([User.init(), Internship.init(), Application.init()]);
+  await Promise.all([User.init(), Internship.init(), Application.init(), Announcement.init(), AuditLog.init()]);
 
   const [admin, acme, globex, s1, s2, s3] = await User.create([
     { name: 'Portal Admin', email: 'admin@portal.com', password: 'admin123', role: 'admin' },
@@ -41,14 +43,29 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
     );
   }
   const resume = '/uploads/sample-resume.pdf';
+  const ago = (n) => new Date(Date.now() - n * 24 * 60 * 60 * 1000);
+  const hist = (...steps) => steps.map(([status, d]) => ({ status, at: ago(d) }));
   await Application.create([
-    { student: s1._id, internship: internships[0]._id, coverLetter: 'I love full-stack development.', resumeUrl: resume, status: 'shortlisted' },
-    { student: s2._id, internship: internships[0]._id, coverLetter: 'Eager to learn the MERN stack.', resumeUrl: resume },
-    { student: s3._id, internship: internships[0]._id, resumeUrl: resume, status: 'rejected' },
-    { student: s1._id, internship: internships[1]._id, resumeUrl: resume, status: 'accepted' },
-    { student: s2._id, internship: internships[1]._id, resumeUrl: resume },
-    { student: s3._id, internship: internships[3]._id, coverLetter: 'I enjoy backend work.', resumeUrl: resume },
+    {
+      student: s1._id, internship: internships[0]._id, coverLetter: 'I love full-stack development.', resumeUrl: resume, status: 'shortlisted',
+      createdAt: ago(6), statusHistory: hist(['applied', 6], ['shortlisted', 3]),
+      notes: 'Strong React portfolio. Ask about Node experience.', rating: 4,
+      interview: { proposedAt: days(3), note: 'Video call, 30 minutes', status: 'proposed' },
+    },
+    { student: s2._id, internship: internships[0]._id, coverLetter: 'Eager to learn the MERN stack.', resumeUrl: resume, createdAt: ago(4) },
+    { student: s3._id, internship: internships[0]._id, resumeUrl: resume, status: 'rejected', createdAt: ago(9), statusHistory: hist(['applied', 9], ['rejected', 7]) },
+    {
+      student: s1._id, internship: internships[1]._id, resumeUrl: resume, status: 'accepted', createdAt: ago(12),
+      statusHistory: hist(['applied', 12], ['shortlisted', 9], ['accepted', 5]), rating: 5,
+    },
+    { student: s2._id, internship: internships[1]._id, resumeUrl: resume, createdAt: ago(2) },
+    { student: s3._id, internship: internships[3]._id, coverLetter: 'I enjoy backend work.', resumeUrl: resume, createdAt: ago(1) },
   ]);
+
+  // Riya bookmarks one internship that is about to close so the dashboard alert is visible
+  await Internship.updateOne({ _id: internships[3]._id }, { deadline: days(2) });
+  await User.updateOne({ _id: s1._id }, { savedInternships: [internships[3]._id, internships[2]._id] });
+  await Announcement.create({ message: 'Welcome to InternHub! Applications for the autumn cohort are now open.', createdBy: admin._id });
 
   console.log('Seeded. Demo logins:');
   console.log('  admin    admin@portal.com / admin123');

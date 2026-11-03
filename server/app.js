@@ -18,6 +18,8 @@ app.get('/api/health', (req, res) => res.json({ success: true, status: 'ok' }));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/internships', require('./routes/internshipRoutes'));
 app.use('/api/applications', require('./routes/applicationRoutes'));
+app.use('/api/student', require('./routes/studentRoutes'));
+app.use('/api/announcements', require('./routes/announcementRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
 app.use(notFound);

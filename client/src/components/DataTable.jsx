@@ -6,7 +6,7 @@ export default function DataTable({ columns, rows }) {
         <thead className="bg-slate-50 text-xs uppercase text-slate-500">
           <tr>
             {columns.map((c) => (
-              <th key={c.header} className="px-4 py-3 font-medium">
+              <th key={c.id || c.header} className="px-4 py-3 font-medium">
                 {c.header}
               </th>
             ))}
@@ -16,7 +16,7 @@ export default function DataTable({ columns, rows }) {
           {rows.map((row) => (
             <tr key={row._id} className="hover:bg-slate-50">
               {columns.map((c) => (
-                <td key={c.header} className="px-4 py-3 align-middle">
+                <td key={c.id || c.header} className="px-4 py-3 align-middle">
                   {c.render(row)}
                 </td>
               ))}

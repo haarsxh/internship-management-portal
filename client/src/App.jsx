@@ -10,16 +10,22 @@ import InternshipDetails from './pages/InternshipDetails'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import MyApplications from './pages/MyApplications'
+import SavedInternships from './pages/SavedInternships'
 import MyInternships from './pages/MyInternships'
 import InternshipForm from './pages/InternshipForm'
 import Applicants from './pages/Applicants'
 import AdminUsers from './pages/AdminUsers'
+import AdminInternships from './pages/AdminInternships'
+import AdminAnnouncements from './pages/AdminAnnouncements'
+import AdminAudit from './pages/AdminAudit'
+import AnnouncementBanner from './components/AnnouncementBanner'
 import NotFound from './pages/NotFound'
 
 export default function App() {
   return (
     <>
       <Navbar />
+      <AnnouncementBanner />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -34,6 +40,7 @@ export default function App() {
 
             <Route element={<ProtectedRoute roles={['student']} />}>
               <Route path="/applications" element={<MyApplications />} />
+              <Route path="/saved" element={<SavedInternships />} />
             </Route>
 
             <Route element={<ProtectedRoute roles={['company']} />}>
@@ -45,6 +52,9 @@ export default function App() {
 
             <Route element={<ProtectedRoute roles={['admin']} />}>
               <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/internships" element={<AdminInternships />} />
+              <Route path="/admin/announcements" element={<AdminAnnouncements />} />
+              <Route path="/admin/audit" element={<AdminAudit />} />
             </Route>
           </Route>
         </Route>

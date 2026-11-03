@@ -5,6 +5,7 @@ const menus = {
   student: [
     ['/dashboard', 'Dashboard'],
     ['/applications', 'My Applications'],
+    ['/saved', 'Saved'],
     ['/profile', 'Profile'],
   ],
   company: [
@@ -16,6 +17,9 @@ const menus = {
   admin: [
     ['/dashboard', 'Dashboard'],
     ['/admin/users', 'Manage Users'],
+    ['/admin/internships', 'Moderation'],
+    ['/admin/announcements', 'Announcements'],
+    ['/admin/audit', 'Audit Log'],
     ['/profile', 'Profile'],
   ],
 }

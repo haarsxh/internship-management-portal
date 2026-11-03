@@ -2,7 +2,11 @@ import { Link } from 'react-router-dom'
 import Spinner from '../components/Spinner'
 import ErrorState from '../components/ErrorState'
 import useFetch from '../hooks/useFetch'
+import InternshipCard from '../components/InternshipCard'
+import ProfileMeter from '../components/ProfileMeter'
+import { ApplicationsOverTime, HorizontalBars, StatusPie } from '../components/AdminCharts'
 import { useAuth } from '../context/AuthContext'
+import { daysLeft, fmtDateTime } from '../utils'
 
 function StatCard({ label, value, tone = 'text-slate-900' }) {
   return (
@@ -13,43 +17,81 @@ function StatCard({ label, value, tone = 'text-slate-900' }) {
   )
 }
 
-function BarList({ title, rows, labelKey, valueKey }) {
-  const max = Math.max(1, ...rows.map((r) => r[valueKey]))
+function Alerts() {
+  const { data } = useFetch('/student/alerts')
+  if (!data?.alerts?.length) return null
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5">
-      <h3 className="mb-3 font-semibold">{title}</h3>
-      {rows.length === 0 && <p className="text-sm text-slate-400">No data yet</p>}
-      {rows.map((r) => (
-        <div key={r[labelKey]} className="mb-2 text-sm">
-          <div className="flex justify-between">
-            <span className="truncate">{r[labelKey]}</span>
-            <span className="font-medium">{r[valueKey]}</span>
+    <div className="mb-6 space-y-2" aria-label="Alerts">
+      {data.alerts.map((a) => {
+        const key = a.type === 'deadline' ? a.internshipId : a.applicationId
+        const to = a.type === 'deadline' ? `/internships/${a.internshipId}` : '/applications'
+        const left = a.type === 'deadline' ? daysLeft(a.deadline) : 0
+        return (
+          <div key={key} className="flex items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <span>
+              {a.type === 'deadline'
+                ? `Closing ${left <= 1 ? 'within a day' : `in ${left} days`}: ${a.title}`
+                : `Interview proposed for ${a.title} on ${fmtDateTime(a.proposedAt)}`}
+            </span>
+            <Link to={to} className="shrink-0 text-indigo-700 hover:underline">
+              {a.type === 'deadline' ? 'Apply now' : 'Respond'} &rsaquo;
+            </Link>
           </div>
-          <div className="mt-1 h-2 rounded bg-slate-100">
-            <div className="h-2 rounded bg-indigo-500" style={{ width: `${(r[valueKey] / max) * 100}%` }} />
-          </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
 
-function StudentDashboard() {
+function Recommended() {
+  const { data, loading } = useFetch('/student/recommendations')
+  if (loading || !data) return null
+  if (data.needsSkills) {
+    return (
+      <p className="mt-8 text-sm text-slate-500">
+        <Link to="/profile" className="text-indigo-700 hover:underline">Add your skills</Link> to get internship recommendations.
+      </p>
+    )
+  }
+  if (data.internships.length === 0) return null
+  return (
+    <section className="mt-10">
+      <h2 className="mb-4 text-2xl">Recommended for you</h2>
+      <div className="grid gap-5 sm:grid-cols-2">
+        {data.internships.slice(0, 4).map((i) => (
+          <InternshipCard key={i._id} internship={i} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function StudentDashboard({ user }) {
   const { data, loading, error, reload } = useFetch('/applications/mine')
   if (loading) return <Spinner />
   if (error) return <ErrorState message={error} onRetry={reload} />
   const count = (s) => data.applications.filter((a) => a.status === s).length
   return (
     <>
+      <Alerts />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Total applications" value={data.applications.length} />
         <StatCard label="Shortlisted" value={count('shortlisted')} tone="text-amber-600" />
         <StatCard label="Accepted" value={count('accepted')} tone="text-green-600" />
         <StatCard label="Rejected" value={count('rejected')} tone="text-red-600" />
       </div>
-      <Link to="/internships" className="mt-6 inline-block rounded-full bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
-        Find internships
-      </Link>
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <ProfileMeter user={user} />
+        <div className="rounded-xl bg-white p-5">
+          <h3 className="font-semibold">Keep going</h3>
+          <p className="mt-1 text-sm text-slate-500">Browse open roles or revisit the ones you bookmarked.</p>
+          <div className="mt-4 flex gap-3">
+            <Link to="/internships" className="rounded-full bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-[#0077ed]">Find internships</Link>
+            <Link to="/saved" className="rounded-full border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">Saved</Link>
+          </div>
+        </div>
+      </div>
+      <Recommended />
     </>
   )
 }
@@ -80,7 +122,6 @@ function AdminDashboard() {
   if (loading) return <Spinner />
   if (error) return <ErrorState message={error} onRetry={reload} />
   const s = data.stats
-  const rows = (obj) => Object.entries(obj).map(([name, count]) => ({ name, count }))
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -90,9 +131,12 @@ function AdminDashboard() {
         <StatCard label="Open internships" value={s.internshipsByStatus.open} tone="text-green-600" />
       </div>
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <BarList title="Applications by status" rows={rows(s.applicationsByStatus)} labelKey="name" valueKey="count" />
-        <BarList title="Most applied internships" rows={s.topInternships} labelKey="title" valueKey="applications" />
-        <BarList title="Top companies by postings" rows={s.topCompanies} labelKey="name" valueKey="internships" />
+        <div className="lg:col-span-2">
+          <ApplicationsOverTime data={s.applicationsOverTime} />
+        </div>
+        <StatusPie counts={s.applicationsByStatus} />
+        <HorizontalBars title="Most applied internships" rows={s.topInternships} labelKey="title" valueKey="applications" valueLabel="Applications" />
+        <HorizontalBars title="Top companies by postings" rows={s.topCompanies} labelKey="name" valueKey="internships" valueLabel="Internships" />
       </div>
     </>
   )
@@ -104,7 +148,7 @@ export default function Dashboard() {
     <div>
       <h1 className="mb-1 text-4xl font-semibold">Hello, {user.name}</h1>
       <p className="mb-6 text-sm capitalize text-slate-500">{user.role} dashboard</p>
-      {user.role === 'student' && <StudentDashboard />}
+      {user.role === 'student' && <StudentDashboard user={user} />}
       {user.role === 'company' && <CompanyDashboard user={user} />}
       {user.role === 'admin' && <AdminDashboard />}
     </div>

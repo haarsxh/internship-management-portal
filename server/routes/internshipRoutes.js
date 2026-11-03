@@ -15,7 +15,7 @@ const rules = [
   body('durationMonths').optional().isInt({ min: 1 }).withMessage('Duration must be at least 1 month'),
 ];
 
-router.get('/', c.list);
+router.get('/', optionalAuth, c.list);
 router.get('/mine', protect, authorize('company'), c.mine); // must precede /:id
 router.post('/', protect, authorize('company'), rules, validate, c.create);
 router.get('/:id', optionalAuth, c.getOne);

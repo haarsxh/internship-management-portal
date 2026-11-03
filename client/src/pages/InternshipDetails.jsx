@@ -8,6 +8,7 @@ import ErrorState from '../components/ErrorState'
 import StatusBadge from '../components/StatusBadge'
 import FormInput from '../components/FormInput'
 import useFetch from '../hooks/useFetch'
+import SaveButton from '../components/SaveButton'
 import { useAuth } from '../context/AuthContext'
 import { errMsg, fmtDate } from '../utils'
 
@@ -25,7 +26,7 @@ export default function InternshipDetails() {
   if (loading) return <Spinner />
   if (error) return <div className="mx-auto max-w-3xl p-6"><ErrorState message={error} onRetry={reload} /></div>
 
-  const { internship: i, application } = data
+  const { internship: i, application, saved } = data
   const closed = i.status !== 'open' || new Date(i.deadline) < new Date()
 
   const handleApply = async (e) => {
@@ -74,7 +75,10 @@ export default function InternshipDetails() {
               )}
             </p>
           </div>
-          <StatusBadge status={closed ? 'closed' : 'open'} />
+          <div className="flex items-center gap-2">
+            <SaveButton internshipId={i._id} saved={saved} />
+            <StatusBadge status={closed ? 'closed' : 'open'} />
+          </div>
         </div>
 
         <dl className="my-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">

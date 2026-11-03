@@ -2,6 +2,7 @@ const Internship = require('../models/Internship');
 const Application = require('../models/Application');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
+const logAudit = require('../utils/audit');
 
 const toSkills = (s) =>
   Array.isArray(s) ? s : String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
@@ -36,7 +37,10 @@ exports.list = asyncHandler(async (req, res) => {
       .populate('company', 'name companyName website'),
     Internship.countDocuments(filter),
   ]);
-  res.json({ success: true, total, page, pages: Math.ceil(total / limit), internships: items });
+  // Students see which internships they have bookmarked
+  const saved = new Set(req.user?.role === 'student' ? req.user.savedInternships.map(String) : []);
+  const internships = items.map((i) => ({ ...i.toObject(), saved: saved.has(String(i._id)) }));
+  res.json({ success: true, total, page, pages: Math.ceil(total / limit), internships });
 });
 
 // GET /api/internships/mine (company)
@@ -57,10 +61,13 @@ exports.getOne = asyncHandler(async (req, res) => {
   if (!internship) throw new ApiError(404, 'Internship not found');
 
   let application = null;
+  let saved = false;
   if (req.user && req.user.role === 'student') {
-    application = await Application.findOne({ student: req.user._id, internship: internship._id });
+    // notes/rating are private to the company
+    application = await Application.findOne({ student: req.user._id, internship: internship._id }).select('-notes -rating');
+    saved = req.user.savedInternships.some((id) => String(id) === String(internship._id));
   }
-  res.json({ success: true, internship, application });
+  res.json({ success: true, internship, application, saved });
 });
 
 // POST /api/internships (company)
@@ -91,7 +98,11 @@ exports.update = asyncHandler(async (req, res) => {
     if (req.body[f] !== undefined) internship[f] = req.body[f];
   });
   if (req.body.skills !== undefined) internship.skills = toSkills(req.body.skills);
+  const statusChanged = internship.isModified('status');
   await internship.save();
+  if (statusChanged) {
+    await logAudit(req.user, `internship.${internship.status === 'closed' ? 'close' : 'reopen'}`, 'Internship', internship._id, internship.title);
+  }
   res.json({ success: true, internship });
 });
 
@@ -100,5 +111,6 @@ exports.remove = asyncHandler(async (req, res) => {
   const internship = await getOwned(req.params.id, req.user);
   await Application.deleteMany({ internship: internship._id });
   await internship.deleteOne();
+  await logAudit(req.user, 'internship.delete', 'Internship', internship._id, internship.title);
   res.json({ success: true, message: 'Internship deleted' });
 });

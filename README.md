@@ -13,6 +13,11 @@ Assignment-II · MERN Stack (ITUL503). Students browse and apply to internships,
 | CO4 – REST & Mongoose | `server/routes`, `controllers`, `models`; Express routers, custom middleware (logger, validate, errorHandler, notFound), `ref` + `populate()`, async CRUD with 200/201/400/404/500 |
 | CO5 – Integration, JWT, optimization | Axios with token interceptor + CORS + dotenv, JWT register/login, `protect`/`authorize` middleware, centralized error handler, toasts, indexes (`schema.index`) and aggregation pipelines (`/api/admin/stats`) |
 
+## Feature overview
+- **Students:** bookmark internships and see "closing in 3 days" alerts on the dashboard; application timeline (applied → shortlisted → accepted/rejected with dates); recommended internships ranked by skill overlap; profile completeness meter; confirm or decline interview proposals.
+- **Companies:** filter, search and sort applicants; bulk shortlist/accept/reject; export applicants to CSV; private notes and 1-5 ratings; propose interview times.
+- **Admins:** Recharts dashboard (applications over time, status pie, top internships/companies); moderate internships (close, reopen, remove); site-wide announcement banner; audit log of approvals, deletions, closures and announcements.
+
 ## Project structure
 ```
 client/   React app (Vite)

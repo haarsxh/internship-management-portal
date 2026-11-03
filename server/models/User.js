@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
     isApproved: { type: Boolean, default: true },
     companyName: { type: String, trim: true },
     website: { type: String, trim: true },
+    savedInternships: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Internship' }],
     profile: {
       phone: String,
       college: String,
