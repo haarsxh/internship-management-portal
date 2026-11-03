@@ -46,6 +46,9 @@ Prerequisites: Node 18+, a MongoDB Atlas cluster (free tier) — or any MongoDB 
 
 In Atlas, add your IP under *Network Access* and use a database user's credentials in `MONGO_URI`.
 
+## Deployment
+One Render web service (Express serves the API and the built React app) plus MongoDB Atlas. See **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** and `render.yaml`.
+
 ## Demo accounts (after `npm run seed`)
 | Role | Email | Password |
 |---|---|---|
@@ -68,5 +71,5 @@ Register/Login → Dashboard (role specific) → Company posts internship → St
 - [Schema / ER diagram](docs/ER-diagram.md)
 
 ## Notes
-- Resume PDFs are stored on local disk in `server/uploads` and served publicly by URL; for production use object storage with access control.
+- Resume PDFs (max 2 MB, checked for the `%PDF` signature) are stored in MongoDB and served at `/api/files/:id`. The id is unguessable but the link is not login-protected; use access-controlled object storage for anything sensitive.
 - JWT is kept in `localStorage` for simplicity (acceptable for coursework; httpOnly cookies are safer in production).

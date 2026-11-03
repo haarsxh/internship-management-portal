@@ -8,6 +8,7 @@ erDiagram
     USER }o--o{ INTERNSHIP : "bookmarks (student)"
     USER ||--o{ AUDIT_LOG : "performs (admin)"
     USER ||--o{ ANNOUNCEMENT : "publishes (admin)"
+    USER ||--o{ FILE : "uploads"
 
     USER {
         ObjectId _id PK
@@ -45,6 +46,14 @@ erDiagram
         string notes "private to company"
         number rating "1-5, private to company"
         object interview "proposedAt, note, status proposed|confirmed|declined"
+    }
+    FILE {
+        ObjectId _id PK
+        string filename
+        string contentType "application/pdf"
+        number size
+        Buffer data "resume bytes, select:false"
+        ObjectId owner FK "ref User"
     }
     AUDIT_LOG {
         ObjectId _id PK

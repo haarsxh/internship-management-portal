@@ -1,4 +1,5 @@
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+// Same-origin /api when the server hosts the built client (production); set VITE_API_URL in dev
+export const API_URL = import.meta.env.VITE_API_URL || '/api'
 // Uploaded files are served from the server origin, not under /api
 export const fileUrl = (path) => (path ? API_URL.replace(/\/api\/?$/, '') + path : '#')
 

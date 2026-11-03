@@ -1,10 +1,9 @@
 require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Internship = require('../models/Internship');
 const Application = require('../models/Application');
+const File = require('../models/File');
 const Announcement = require('../models/Announcement');
 const AuditLog = require('../models/AuditLog');
 
@@ -12,7 +11,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
 
 (async () => {
   await mongoose.connect(process.env.MONGO_URI);
-  await Promise.all([User.deleteMany(), Internship.deleteMany(), Application.deleteMany(), Announcement.deleteMany(), AuditLog.deleteMany()]);
+  await Promise.all([File.deleteMany(), User.deleteMany(), Internship.deleteMany(), Application.deleteMany(), Announcement.deleteMany(), AuditLog.deleteMany()]);
   // Make sure indexes (unique email, compound, text) exist
   await Promise.all([User.init(), Internship.init(), Application.init(), Announcement.init(), AuditLog.init()]);
 
@@ -34,15 +33,16 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
     { title: 'Mobile App Intern (Closed)', description: 'Build React Native screens.', company: acme._id, location: 'Delhi', mode: 'hybrid', stipend: 14000, durationMonths: 3, skills: ['React Native'], deadline: days(5), status: 'closed' },
   ]);
 
-  // Minimal placeholder PDF so seeded resume links resolve
-  const samplePath = path.join(__dirname, '..', 'uploads', 'sample-resume.pdf');
-  if (!fs.existsSync(samplePath)) {
-    fs.writeFileSync(
-      samplePath,
+  // Minimal placeholder PDF stored in MongoDB so seeded resume links resolve
+  const sample = await File.create({
+    filename: 'sample-resume.pdf',
+    contentType: 'application/pdf',
+    size: 0,
+    data: Buffer.from(
       '%PDF-1.1\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 200 200]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF'
-    );
-  }
-  const resume = '/uploads/sample-resume.pdf';
+    ),
+  });
+  const resume = `/api/files/${sample._id}`;
   const ago = (n) => new Date(Date.now() - n * 24 * 60 * 60 * 1000);
   const hist = (...steps) => steps.map(([status, d]) => ({ status, at: ago(d) }));
   await Application.create([
@@ -79,7 +79,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
   const pick = (arr) => arr[Math.floor(rand() * arr.length)];
-  const sample = (arr, n) => [...arr].sort(() => rand() - 0.5).slice(0, n);
+  const pickN = (arr, n) => [...arr].sort(() => rand() - 0.5).slice(0, n);
   const between = (a, b) => a + Math.floor(rand() * (b - a + 1));
   const daysAgo = (n) => new Date(Date.now() - n * 24 * 60 * 60 * 1000);
 
@@ -111,8 +111,8 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
         branch: pick(branches),
         // leave some profiles incomplete so the completeness meter varies
         phone: idx % 3 === 0 ? undefined : `98${String(between(10000000, 99999999))}`,
-        skills: sample(skillPool, between(2, 5)),
-        resumeUrl: idx % 4 === 0 ? undefined : '/uploads/sample-resume.pdf',
+        skills: pickN(skillPool, between(2, 5)),
+        resumeUrl: idx % 4 === 0 ? undefined : resume,
       },
     }))
   );
@@ -173,7 +173,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
 
   const extraApplications = [];
   for (const stu of allStudents) {
-    for (const internship of sample(applyable, between(2, 5))) {
+    for (const internship of pickN(applyable, between(2, 5))) {
       const key = `${stu._id}:${internship._id}`;
       if (taken.has(key)) continue;
       taken.add(key);
@@ -193,7 +193,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
         student: stu._id,
         internship: internship._id,
         coverLetter: rand() < 0.6 ? `I'm excited about the ${internship.title} role and would love to contribute.` : undefined,
-        resumeUrl: '/uploads/sample-resume.pdf',
+        resumeUrl: resume,
         status,
         createdAt: daysAgo(age),
         statusHistory,
@@ -214,7 +214,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
 
   // Bookmarks (kept off internships the student already applied to)
   for (const stu of extraStudents) {
-    const saved = sample(applyable, between(0, 4)).filter((i) => !taken.has(`${stu._id}:${i._id}`));
+    const saved = pickN(applyable, between(0, 4)).filter((i) => !taken.has(`${stu._id}:${i._id}`));
     if (saved.length) await User.updateOne({ _id: stu._id }, { savedInternships: saved.map((i) => i._id) });
   }
 

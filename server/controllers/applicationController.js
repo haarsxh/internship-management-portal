@@ -2,6 +2,7 @@ const Application = require('../models/Application');
 const Internship = require('../models/Internship');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
+const saveFile = require('../utils/saveFile');
 
 // POST /api/internships/:id/apply (student) — multipart: coverLetter, resume(optional PDF)
 exports.apply = asyncHandler(async (req, res) => {
@@ -14,7 +15,7 @@ exports.apply = asyncHandler(async (req, res) => {
     throw new ApiError(409, 'You have already applied to this internship');
   }
 
-  const resumeUrl = req.file ? `/uploads/${req.file.filename}` : req.user.profile?.resumeUrl;
+  const resumeUrl = req.file ? await saveFile(req.file, req.user._id) : req.user.profile?.resumeUrl;
   if (!resumeUrl) throw new ApiError(400, 'Please upload a resume (or add one to your profile)');
 
   const application = await Application.create({

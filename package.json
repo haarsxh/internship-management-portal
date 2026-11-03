@@ -1,0 +1,11 @@
+{
+  "name": "internship-management-portal",
+  "private": true,
+  "description": "MERN internship portal: Express API in /server, React app in /client",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "npm install --include=dev --prefix client && npm run build --prefix client && npm install --prefix server",
+    "start": "node server/server.js",
+    "seed": "npm run seed --prefix server"
+  }
+}

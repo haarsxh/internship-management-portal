@@ -75,6 +75,6 @@ Applicant filtering/sorting and CSV export run in the client from `GET /internsh
 `GET /admin/stats` now also returns `applicationsOverTime` (14 daily buckets, UTC) for the line chart. Audit actions: `user.approve|revoke|delete`, `internship.close|reopen|delete`, `announcement.create|show|hide|delete`.
 
 ## Misc
-`GET /health` → `{success:true, status:"ok"}` · uploaded PDFs are served from `/uploads/<file>` (server origin, not under `/api`).
+`GET /health` → `{success:true, status:"ok"}` · `GET /files/:id` streams a stored resume PDF (public by its unguessable id; 404 unknown, 400 bad id).
 
 Status codes used: 200, 201, 400 (validation / bad id), 401 (no/invalid token), 403 (wrong role / not owner), 404, 409 (duplicate), 500.

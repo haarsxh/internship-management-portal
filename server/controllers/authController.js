@@ -2,6 +2,7 @@ const User = require('../models/User');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 const generateToken = require('../utils/generateToken');
+const saveFile = require('../utils/saveFile');
 
 const sendAuth = (res, status, user) => {
   const data = user.toObject();
@@ -66,7 +67,7 @@ exports.updateMe = asyncHandler(async (req, res) => {
 // POST /api/auth/me/resume
 exports.uploadResume = asyncHandler(async (req, res) => {
   if (!req.file) throw new ApiError(400, 'Please attach a PDF resume');
-  req.user.profile.resumeUrl = `/uploads/${req.file.filename}`;
+  req.user.profile.resumeUrl = await saveFile(req.file, req.user._id);
   await req.user.save();
   res.json({ success: true, user: req.user });
 });
