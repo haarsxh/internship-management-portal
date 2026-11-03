@@ -6,7 +6,7 @@ import { errMsg } from '../utils'
 
 // Accounts created by `npm run seed`. Hide one-tap buttons with VITE_DEMO_LOGIN=false.
 export const demoAccounts = {
-  student: { label: 'Student', email: 'riya@student.com', password: 'student123' },
+  student: { label: 'Student', email: 'harshverma@student.com', password: 'student123' },
   company: { label: 'Company', email: 'hr@acme.com', password: 'company123' },
   admin: { label: 'Admin', email: 'admin@portal.com', password: 'admin123' },
 }

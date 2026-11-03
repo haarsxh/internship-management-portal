@@ -52,11 +52,11 @@ In Atlas, add your IP under *Network Access* and use a database user's credentia
 | Admin | admin@portal.com | admin123 |
 | Company (approved) | hr@acme.com | company123 |
 | Company (pending approval) | hr@globex.com | company123 |
-| Student | riya@student.com | student123 |
+| Student | harshverma@student.com | student123 |
 
 The login page has one-click **Quick demo sign in** buttons (Student / Company / Admin) that use these seeded accounts. Set `VITE_DEMO_LOGIN=false` in `client/.env` to hide them (do this for any real deployment).
 
-`npm run seed` also loads a larger, repeatable mock dataset: **27 users** (17 students, 9 companies incl. 3 pending approval, 1 admin), **30 internships** (open, closed and expired, spread across 8 companies), **~67 applications** in every status over the last two weeks (with ratings, notes, interviews and status history), bookmarks, past announcements and an audit trail. Extra accounts follow the same pattern: companies `hr@initech.com`, `hr@umbrella.com`, `hr@stark.com`, `hr@wayne.com`, `hr@hooli.com` (password `company123`) and students such as `ananya@student.com`, `rohan@student.com`, `priya@student.com` (password `student123`).
+`npm run seed` also loads a larger, repeatable mock dataset: **27 users** (17 students, 9 companies incl. 3 pending approval, 1 admin), **30 internships** (open, closed and expired, spread across 8 companies), **~67 applications** in every status over the last two weeks (with ratings, notes, interviews and status history), bookmarks, past announcements and an audit trail. Extra accounts follow the same pattern: companies `hr@initech.com`, `hr@umbrella.com`, `hr@stark.com`, `hr@wayne.com`, `hr@hooli.com` (password `company123`) and students such as `ananya@student.com`, `rohan@student.com`, `pharshverma@student.com` (password `student123`).
 
 Self-registration only creates students and companies; companies must be approved by an admin before posting.
 

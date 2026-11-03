@@ -20,7 +20,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
     { name: 'Portal Admin', email: 'admin@portal.com', password: 'admin123', role: 'admin' },
     { name: 'Acme HR', email: 'hr@acme.com', password: 'company123', role: 'company', companyName: 'Acme Technologies', website: 'https://acme.example.com', isApproved: true },
     { name: 'Globex HR', email: 'hr@globex.com', password: 'company123', role: 'company', companyName: 'Globex Corp', isApproved: false },
-    { name: 'Harsh Verma', email: 'riya@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'CSE', phone: '9876543210', skills: ['React', 'Node.js'] } },
+    { name: 'Harsh Verma', email: 'harshverma@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'CSE', phone: '9876543210', skills: ['React', 'Node.js'] } },
     { name: 'Aman Verma', email: 'aman@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'ECE', skills: ['Python'] } },
     { name: 'Neha Singh', email: 'neha@student.com', password: 'student123', profile: { college: 'MNIT Jaipur', branch: 'IT', skills: ['Java', 'SQL'] } },
   ]);
@@ -243,7 +243,7 @@ const days = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
   console.log('  admin    admin@portal.com / admin123');
   console.log('  company  hr@acme.com / company123   (approved)');
   console.log('  company  hr@globex.com / company123 (pending approval)');
-  console.log('  student  riya@student.com / student123');
+  console.log('  student  harshverma@student.com / student123');
   await mongoose.disconnect();
 })().catch((e) => {
   console.error(e);

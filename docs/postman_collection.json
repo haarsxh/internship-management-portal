@@ -157,7 +157,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"riya@student.com\",\n  \"password\": \"student123\"\n}"
+              "raw": "{\n  \"email\": \"harshverma@student.com\",\n  \"password\": \"student123\"\n}"
             }
           },
           "event": [
