@@ -57,7 +57,7 @@ export default function MyApplications() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">My applications</h1>
+      <h1 className="mb-6 text-4xl font-semibold">My applications</h1>
       {loading ? (
         <Spinner />
       ) : error ? (

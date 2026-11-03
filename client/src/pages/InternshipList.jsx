@@ -23,11 +23,11 @@ export default function InternshipList() {
     setPage(1)
   }
 
-  const inputCls = 'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm'
+  const inputCls = 'rounded-full border border-slate-300 bg-white px-4 py-2 text-sm'
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-bold">Browse internships</h1>
+    <div className="mx-auto max-w-[1024px] px-4 py-8">
+      <h1 className="mb-4 text-4xl font-semibold">Browse internships</h1>
       <form onSubmit={handleSearch} className="mb-6 flex flex-wrap gap-3">
         <input name="q" value={filters.q} onChange={handleChange} placeholder="Search title or skill" className={`${inputCls} min-w-52 flex-1`} />
         <input name="location" value={filters.location} onChange={handleChange} placeholder="Location" className={inputCls} />
@@ -38,8 +38,8 @@ export default function InternshipList() {
           <option value="hybrid">Hybrid</option>
         </select>
         <input name="minStipend" type="number" min="0" value={filters.minStipend} onChange={handleChange} placeholder="Min stipend" className={`${inputCls} w-32`} />
-        <button className="rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">Search</button>
-        <button type="button" onClick={handleReset} className="rounded-lg border border-slate-300 px-4 py-2 text-sm hover:bg-white">
+        <button className="rounded-full bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">Search</button>
+        <button type="button" onClick={handleReset} className="rounded-full border border-slate-300 px-4 py-2 text-sm hover:bg-white">
           Reset
         </button>
       </form>

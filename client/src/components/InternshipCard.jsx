@@ -5,26 +5,28 @@ export default function InternshipCard({ internship: i }) {
   return (
     <Link
       to={`/internships/${i._id}`}
-      className="block rounded-xl border border-slate-200 bg-white p-5 transition hover:border-indigo-300 hover:shadow-md"
+      className="group block rounded-2xl bg-white p-6 transition duration-300 hover:scale-[1.02] hover:shadow-xl"
     >
-      <h3 className="font-semibold text-slate-900">{i.title}</h3>
-      <p className="text-sm text-slate-500">{i.company?.companyName || i.company?.name}</p>
-      <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        <span className="rounded bg-slate-100 px-2 py-1">{i.location}</span>
-        <span className="rounded bg-slate-100 px-2 py-1 capitalize">{i.mode}</span>
-        <span className="rounded bg-slate-100 px-2 py-1">{i.durationMonths} mo</span>
-        <span className="rounded bg-green-50 px-2 py-1 text-green-700">
-          {i.stipend ? `₹${i.stipend.toLocaleString('en-IN')}/mo` : 'Unpaid'}
-        </span>
-      </div>
-      <div className="mt-3 flex flex-wrap gap-1">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{i.company?.companyName || i.company?.name}</p>
+      <h3 className="mt-1 text-xl leading-snug text-slate-900">{i.title}</h3>
+      <p className="mt-2 text-sm text-slate-500">
+        {i.location} · <span className="capitalize">{i.mode}</span> · {i.durationMonths} months
+      </p>
+      <p className="mt-4 text-2xl font-semibold tracking-tight text-slate-900">
+        {i.stipend ? `₹${i.stipend.toLocaleString('en-IN')}` : 'Unpaid'}
+        {i.stipend > 0 && <span className="text-sm font-normal text-slate-400"> /month</span>}
+      </p>
+      <div className="mt-4 flex flex-wrap gap-1.5">
         {i.skills?.slice(0, 4).map((s) => (
-          <span key={s} className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs text-indigo-700">
+          <span key={s} className="rounded-full bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600">
             {s}
           </span>
         ))}
       </div>
-      <p className="mt-3 text-xs text-slate-400">Apply by {fmtDate(i.deadline)}</p>
+      <div className="mt-5 flex items-center justify-between text-xs">
+        <span className="text-slate-400">Apply by {fmtDate(i.deadline)}</span>
+        <span className="text-indigo-700 group-hover:underline">Learn more &rsaquo;</span>
+      </div>
     </Link>
   )
 }

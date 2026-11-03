@@ -41,11 +41,11 @@ export default function Login() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-14">
-      <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-6 text-2xl font-bold">Log in</h1>
+      <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-slate-200 bg-white p-8 ">
+        <h1 className="mb-6 text-4xl font-semibold">Log in</h1>
         <FormInput label="Email" name="email" type="email" value={form.email} onChange={handleChange} error={errors.email} />
         <FormInput label="Password" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} />
-        <button disabled={submitting} className="w-full rounded-lg bg-indigo-600 py-2.5 font-medium text-white hover:bg-indigo-700 disabled:opacity-60">
+        <button disabled={submitting} className="w-full rounded-full bg-indigo-600 py-2.5 font-medium text-white hover:bg-indigo-700 disabled:opacity-60">
           {submitting ? 'Signing in...' : 'Log in'}
         </button>
         <p className="mt-4 text-center text-sm text-slate-500">

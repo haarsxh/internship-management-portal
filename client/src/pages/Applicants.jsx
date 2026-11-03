@@ -43,7 +43,7 @@ export default function Applicants() {
   return (
     <div>
       <Link to="/my-internships" className="text-sm text-indigo-600 hover:underline">&larr; My internships</Link>
-      <h1 className="mb-6 mt-2 text-2xl font-bold">Applicants{data ? `: ${data.internship.title}` : ''}</h1>
+      <h1 className="mb-6 mt-2 text-4xl font-semibold">Applicants{data ? `: ${data.internship.title}` : ''}</h1>
       {loading ? (
         <Spinner />
       ) : error ? (

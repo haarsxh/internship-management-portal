@@ -55,8 +55,8 @@ export default function MyInternships() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">My internships</h1>
-        <Link to="/my-internships/new" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
+        <h1 className="text-4xl font-semibold">My internships</h1>
+        <Link to="/my-internships/new" className="rounded-full bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
           + Post internship
         </Link>
       </div>
@@ -75,8 +75,8 @@ export default function MyInternships() {
           "{toDelete?.title}" and all its applications will be permanently removed.
         </p>
         <div className="mt-5 flex justify-end gap-3">
-          <button onClick={() => setToDelete(null)} className="rounded-lg border px-4 py-2 text-sm">Cancel</button>
-          <button onClick={confirmDelete} className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700">Delete</button>
+          <button onClick={() => setToDelete(null)} className="rounded-full border border-slate-300 px-4 py-2 text-sm">Cancel</button>
+          <button onClick={confirmDelete} className="rounded-full bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700">Delete</button>
         </div>
       </Modal>
     </div>

@@ -78,7 +78,7 @@ export default function InternshipForm() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold">{id ? 'Edit internship' : 'Post an internship'}</h1>
+      <h1 className="mb-6 text-4xl font-semibold">{id ? 'Edit internship' : 'Post an internship'}</h1>
       <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-slate-200 bg-white p-6">
         <FormInput label="Title" name="title" value={form.title} onChange={handleChange} error={errors.title} />
         <FormInput label="Description" name="description" as="textarea" rows={5} value={form.description} onChange={handleChange} error={errors.description} />
@@ -95,10 +95,10 @@ export default function InternshipForm() {
           <FormInput label="Application deadline" name="deadline" type="date" value={form.deadline} onChange={handleChange} error={errors.deadline} />
         </div>
         <div className="flex gap-3">
-          <button disabled={submitting} className="rounded-lg bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-60">
+          <button disabled={submitting} className="rounded-full bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-60">
             {submitting ? 'Saving...' : id ? 'Save changes' : 'Post internship'}
           </button>
-          <button type="button" onClick={() => navigate('/my-internships')} className="rounded-lg border px-5 py-2.5">
+          <button type="button" onClick={() => navigate('/my-internships')} className="rounded-full border border-slate-300 px-5 py-2.5">
             Cancel
           </button>
         </div>

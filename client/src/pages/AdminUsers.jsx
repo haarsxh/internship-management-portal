@@ -55,7 +55,7 @@ export default function AdminUsers() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Manage users</h1>
+        <h1 className="text-4xl font-semibold">Manage users</h1>
         <select value={role} onChange={(e) => setRole(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
           <option value="">All roles</option>
           <option value="student">Students</option>
@@ -70,8 +70,8 @@ export default function AdminUsers() {
           {toDelete?.name} and all their related data will be permanently removed.
         </p>
         <div className="mt-5 flex justify-end gap-3">
-          <button onClick={() => setToDelete(null)} className="rounded-lg border px-4 py-2 text-sm">Cancel</button>
-          <button onClick={confirmDelete} className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700">Delete</button>
+          <button onClick={() => setToDelete(null)} className="rounded-full border border-slate-300 px-4 py-2 text-sm">Cancel</button>
+          <button onClick={confirmDelete} className="rounded-full bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700">Delete</button>
         </div>
       </Modal>
     </div>

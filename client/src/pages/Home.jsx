@@ -3,37 +3,69 @@ import InternshipCard from '../components/InternshipCard'
 import Spinner from '../components/Spinner'
 import useFetch from '../hooks/useFetch'
 
+const tiles = [
+  { who: 'Students', line: 'Find it. Apply. Done.', text: 'Search by skill, location and stipend. Apply with your resume in seconds and follow every decision.' },
+  { who: 'Companies', line: 'Hire the next generation.', text: 'Post internships, review applicants and move them from shortlisted to accepted in one place.' },
+  { who: 'Admins', line: 'See the whole picture.', text: 'Approve companies and track applications and postings with live platform statistics.' },
+]
+
 export default function Home() {
   const { data, loading } = useFetch('/internships', { limit: 3 })
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-indigo-700 to-indigo-500 px-4 py-20 text-center text-white">
-        <h1 className="text-4xl font-bold sm:text-5xl">Find your next internship</h1>
-        <p className="mx-auto mt-4 max-w-xl text-indigo-100">
-          Students discover and apply. Companies post and shortlist. Admins keep everything running.
+      <section className="bg-black px-4 pb-24 pt-20 text-center text-white">
+        <h1 className="mx-auto max-w-3xl text-5xl font-semibold leading-[1.05] sm:text-7xl">Internships.</h1>
+        <p className="mx-auto mt-2 max-w-3xl bg-gradient-to-r from-[#ff9f0a] via-[#ff375f] to-[#bf5af2] bg-clip-text text-4xl font-semibold text-transparent sm:text-6xl">
+          Your career starts here.
         </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link to="/internships" className="rounded-lg bg-white px-5 py-2.5 font-medium text-indigo-700 hover:bg-indigo-50">
+        <p className="mx-auto mt-6 max-w-xl text-xl text-white/70">
+          One portal for students, companies and campus coordinators.
+        </p>
+        <div className="mt-8 flex justify-center gap-4">
+          <Link to="/internships" className="rounded-full bg-indigo-600 px-5 py-2 text-[17px] text-white hover:bg-[#0077ed]">
             Browse internships
           </Link>
-          <Link to="/register" className="rounded-lg border border-white/60 px-5 py-2.5 font-medium hover:bg-white/10">
+          <Link to="/register" className="rounded-full border border-[#2997ff] px-5 py-2 text-[17px] text-[#2997ff] hover:bg-[#2997ff] hover:text-black">
             Create account
           </Link>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-4 py-12">
-        <h2 className="mb-6 text-xl font-semibold">Closing soon</h2>
+
+      <section className="mx-auto max-w-[1024px] px-4 py-20">
+        <h2 className="mb-2 text-center text-4xl sm:text-5xl">Closing soon.</h2>
+        <p className="mb-10 text-center text-xl text-slate-500">Apply before the deadline.</p>
         {loading ? (
           <Spinner />
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {data?.internships.map((i) => (
               <InternshipCard key={i._id} internship={i} />
             ))}
           </div>
         )}
+        <p className="mt-8 text-center">
+          <Link to="/internships" className="text-xl text-indigo-700 hover:underline">
+            See all internships &rsaquo;
+          </Link>
+        </p>
       </section>
+
+      <section className="bg-white px-4 py-20">
+        <div className="mx-auto grid max-w-[1024px] gap-5 md:grid-cols-3">
+          {tiles.map((t) => (
+            <div key={t.who} className="rounded-[28px] bg-slate-50 p-8">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{t.who}</p>
+              <h3 className="mt-2 text-3xl leading-tight">{t.line}</h3>
+              <p className="mt-4 text-[17px] text-slate-500">{t.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="border-t border-slate-200 px-4 py-6 text-center text-xs text-slate-400">
+        InternHub · Internship Management Portal
+      </footer>
     </div>
   )
 }

@@ -47,7 +47,7 @@ function StudentDashboard() {
         <StatCard label="Accepted" value={count('accepted')} tone="text-green-600" />
         <StatCard label="Rejected" value={count('rejected')} tone="text-red-600" />
       </div>
-      <Link to="/internships" className="mt-6 inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
+      <Link to="/internships" className="mt-6 inline-block rounded-full bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
         Find internships
       </Link>
     </>
@@ -102,7 +102,7 @@ export default function Dashboard() {
   const { user } = useAuth()
   return (
     <div>
-      <h1 className="mb-1 text-2xl font-bold">Hello, {user.name}</h1>
+      <h1 className="mb-1 text-4xl font-semibold">Hello, {user.name}</h1>
       <p className="mb-6 text-sm capitalize text-slate-500">{user.role} dashboard</p>
       {user.role === 'student' && <StudentDashboard />}
       {user.role === 'company' && <CompanyDashboard user={user} />}

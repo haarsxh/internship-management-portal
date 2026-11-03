@@ -9,7 +9,7 @@ export default function FormInput({ label, name, error, as = 'input', children, 
         id={name}
         name={name}
         aria-invalid={!!error}
-        className={`w-full rounded-lg border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500 ${
+        className={`w-full rounded-lg border bg-white px-4 py-2.5 text-[17px] outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/20 ${
           error ? 'border-red-400' : 'border-slate-300'
         }`}
         {...props}

@@ -1,9 +1,53 @@
 @import "tailwindcss";
 
+/* Apple-inspired design tokens: SF type stack, #0071e3 accent, #f5f5f7 surfaces, pill buttons */
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --color-indigo-50: #f0f7ff;
+  --color-indigo-100: #d9ebfd;
+  --color-indigo-200: #b3d7fb;
+  --color-indigo-300: #7ab8f6;
+  --color-indigo-400: #2997ff;
+  --color-indigo-500: #2997ff;
+  --color-indigo-600: #0071e3;
+  --color-indigo-700: #0066cc;
+
+  --color-slate-50: #f5f5f7;
+  --color-slate-100: #f0f0f2;
+  --color-slate-200: #e8e8ed;
+  --color-slate-300: #d2d2d7;
+  --color-slate-400: #86868b;
+  --color-slate-500: #6e6e73;
+  --color-slate-600: #515154;
+  --color-slate-700: #424245;
+  --color-slate-800: #1d1d1f;
+  --color-slate-900: #1d1d1f;
+
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-2xl: 28px;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  @apply bg-slate-50 text-slate-800 antialiased;
+  @apply bg-slate-50 text-slate-800;
+  letter-spacing: -0.022em;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+:focus-visible {
+  outline: 4px solid rgb(0 125 250 / 0.6);
+  outline-offset: 1px;
+}
+
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: none;
 }

@@ -14,7 +14,7 @@ export default function Modal({ open, title, onClose, children }) {
       <div
         role="dialog"
         aria-modal="true"
-        className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl"
+        className="w-full max-w-lg rounded-[28px] bg-white p-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">

@@ -63,7 +63,7 @@ export default function Profile() {
 
   return (
     <div className="max-w-xl">
-      <h1 className="mb-6 text-2xl font-bold">Profile</h1>
+      <h1 className="mb-6 text-4xl font-semibold">Profile</h1>
       <form onSubmit={handleSave} noValidate className="rounded-xl border border-slate-200 bg-white p-6">
         <FormInput label="Email" name="email" value={user.email} disabled />
         <FormInput label="Name" name="name" value={form.name} onChange={handleChange} error={errors.name} />
@@ -81,7 +81,7 @@ export default function Profile() {
             <FormInput label="Skills (comma separated)" name="skills" value={form.skills} onChange={handleChange} />
           </>
         )}
-        <button disabled={saving} className="rounded-lg bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-60">
+        <button disabled={saving} className="rounded-full bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-60">
           {saving ? 'Saving...' : 'Save changes'}
         </button>
       </form>
@@ -98,7 +98,7 @@ export default function Profile() {
           )}
           <div className="mt-3 flex items-center gap-3">
             <input ref={fileRef} type="file" accept="application/pdf" className="text-sm" />
-            <button type="button" disabled={uploading} onClick={handleUpload} className="rounded-lg border px-4 py-2 text-sm hover:bg-slate-50 disabled:opacity-60">
+            <button type="button" disabled={uploading} onClick={handleUpload} className="rounded-full border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50 disabled:opacity-60">
               {uploading ? 'Uploading...' : 'Upload'}
             </button>
           </div>

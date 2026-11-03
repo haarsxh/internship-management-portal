@@ -64,7 +64,7 @@ export default function InternshipDetails() {
       <div className="rounded-xl border border-slate-200 bg-white p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold">{i.title}</h1>
+            <h1 className="text-4xl font-semibold">{i.title}</h1>
             <p className="text-slate-500">
               {i.company?.companyName || i.company?.name}
               {i.company?.website && (
@@ -104,7 +104,7 @@ export default function InternshipDetails() {
 
         <div className="mt-6">
           {!user ? (
-            <Link to="/login" state={{ from: { pathname: `/internships/${id}` } }} className="rounded-lg bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700">
+            <Link to="/login" state={{ from: { pathname: `/internships/${id}` } }} className="rounded-full bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700">
               Log in to apply
             </Link>
           ) : user.role !== 'student' ? (
@@ -117,7 +117,7 @@ export default function InternshipDetails() {
             <button
               disabled={closed}
               onClick={() => setOpen(true)}
-              className="rounded-lg bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="rounded-full bg-indigo-600 px-5 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-50"
             >
               {closed ? 'Applications closed' : 'Apply now'}
             </button>
@@ -137,7 +137,7 @@ export default function InternshipDetails() {
             onChange={(e) => setCoverLetter(e.target.value)}
           />
           <FormInput label="Resume (PDF, max 2MB)" name="resume" type="file" accept="application/pdf" ref={fileRef} error={fileError} />
-          <button disabled={submitting} className="w-full rounded-lg bg-indigo-600 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-60">
+          <button disabled={submitting} className="w-full rounded-full bg-indigo-600 py-2.5 text-white hover:bg-indigo-700 disabled:opacity-60">
             {submitting ? 'Submitting...' : 'Submit application'}
           </button>
         </form>
