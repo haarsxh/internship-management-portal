@@ -2,6 +2,19 @@
 
 Assignment-II · MERN Stack (ITUL503). Students browse and apply to internships, companies post listings and manage applicants, admins approve companies and view platform statistics.
 
+## Live demo
+**https://internship-portal-b6y4.onrender.com**
+
+Try it with the one-tap **Student / Company / Admin** buttons on the home or sign-in page, or with the demo accounts below. The site runs on Render's free plan, so the first visit after a quiet spell can take about a minute to wake up.
+
+| Role | Email | Password |
+|---|---|---|
+| Student | harshverma@student.com | student123 |
+| Company | hr@acme.com | company123 |
+| Admin | admin@portal.com | admin123 |
+
+Hosted as one Render web service (Express serves the API and the built React app) with a MongoDB Atlas database. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
 ## Tech stack
 - **Client:** React 19, Vite, React Router, Axios, Tailwind CSS, react-hot-toast
 - **Server:** Node.js, Express, Mongoose (MongoDB Atlas), JWT, bcryptjs, multer, express-validator, helmet, cors
